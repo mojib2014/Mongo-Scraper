@@ -5,3 +5,8 @@
 body {
     background-image: url("../images/stardust.png");
 }
+
+#box {
+    background-color: #2196f3;
+    margin-top: 30px;
+}
