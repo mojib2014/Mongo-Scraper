@@ -9,8 +9,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/style.css">
-    <script type="text/javascript" src="../public/javascript/home.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="/javascript/home.js"></script>
 </head>
 
 <body>
@@ -22,7 +22,8 @@
                 <ul class="right hide-on-med-and-down">
                     <li><a href="#">HOME</a></li>
                     <li><a href="#">SAVED ARTICLES</a></li>
-                    <li><a class="waves-effect waves-teal btn teal accent-4">SCRAPE ARTICLES</a></li>
+                    <button  class="btn waves-effect waves-light" type="submit" name="action" onclick="displayScrape()">SCRAPE ARTICLES</button>
+                        
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
                     <li><a href="sass.html">HOME</a></li>
@@ -39,14 +40,14 @@
                     <!-- random image -->
                     <div class="caption center-align">
                         <h3>MONGO SCRAPER</h3>
-                        <h5 class="light grey-text text-lighten-3">New York Times Edition!!!</h5>
+                        <h5 class="light grey-text text-lighten-3">FOX 5 SAN DIEGO</h5>
                     </div>
                 </li>
                 <li>
                     <img src="../public/images/newspaper.jpg">
                     <!-- random image -->
                     <div class="caption left-align">
-                        <h3 class="white-text">MONGO SCRAPER</h3>
+                        <h3 class="white-text">FOX 5 SAN DIEGO</h3>
                         <h5 class="light white-text">VIEW YOUR FAVOURITE ARTICLES......</h5>
                     </div>
                 </li>
@@ -54,7 +55,7 @@
                     <img src="../public/images/newspaper2.jpg">
                     <!-- random image -->
                     <div class="caption right-align">
-                        <h3>MONGO SCRAPER</h3>
+                        <h3>FOX 5 SAN DIEGO</h3>
                         <h5 class="light grey-text text-lighten-3">SAVE YOUR FAVOURITE ARTICLES!!!!!</h5>
                     </div>
                 </li>
@@ -62,12 +63,25 @@
                     <img src="../public/images/newspaper3.jpg">
                     <!-- random image -->
                     <div class="caption center-align">
-                        <h3>MONGO SCRAPER</h3>
-                         <h5 class="light grey-text text-lighten-3">ONE CLICK TO SCRAPE YOUR FAVOURTIE ARTICLE.......</h5>
+                        <h3>FOX 5 SAN DIEGO</h3>
+                        <h5 class="light grey-text text-lighten-3">ONE CLICK TO SCRAPE YOUR FAVOURTIE ARTICLE.......</h5>
                     </div>
                 </li>
             </ul>
         </div>
+
+        <table class="bordered striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody id="display-results">
+
+            </tbody>
+        </table>
+    </div>
     </div>
 </body>
 
