@@ -4,15 +4,39 @@ $(document).ready(function () {
 });
 
 function displayScrape() {
-    $.getJSON("/all" ,function(data){
+    $.getJSON("/all", function (data) {
         console.log(data);
-        $("#display-results").empty();
+        $("#fox5").empty();
         for (var i = 0; i < data.length; i++) {
-            var tr;
-            tr = $("<tr/>");
-            tr.append("<td>" + data[i].title + "</td>");
-            tr.append("<td>" + data[i].link + "</td>");
-            $("#display-results").first().append(tr);
+            var mainDiv = $("<div>");
+            mainDiv.addClass("card blue-grey darken-1");
+
+            var cardContentDiv = $("<div>");
+            cardContentDiv.addClass("card-content white-text");
+
+            var spanTitle = $("<span>");
+            spanTitle.addClass("card-title");
+            spanTitle.text(data[i].title);
+            var p = $("<p>");            
+            cardContentDiv.append(spanTitle);
+            cardContentDiv.append(p);
+
+            var cardActionDiv = $("<div>");
+            cardActionDiv.addClass("card-action");
+            var a = $("<a>");
+            a.attr("href",data[i].link);
+            a.text("Go to the article");
+            cardActionDiv.append(a);
+            
+            var button = $("<a>");
+            button.addClass("waves-effect waves-light btn");
+            button.text("Create Notes");
+            cardActionDiv.append(button);
+            mainDiv.append(cardContentDiv);
+            mainDiv.append(cardActionDiv);
+
+            $("#fox5").append(mainDiv);
+
         }
     });
 }
