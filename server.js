@@ -7,8 +7,8 @@ var path = require("path");
 var app = express();
 app.use(express.static("./public"));
 
-var PORT = process.env.PORT || 3000;
-var databaseUrl = "foxsSrape";
+var PORT = process.env.PORT || 4000;
+var databaseUrl = "foxsScrape";
 var collections = ["foxsScrappedData"];
 var db = mongojs(databaseUrl, collections);
 db.on("error", function (error) {
@@ -66,15 +66,14 @@ app.get("/scrape", function (req, res) {
         // but be sure to visit the package's npm page to see how it works
         $("h4.entry-title").each(function (i, element) {
 
-            var title = $(element).children().attr("href");
-            var link = $(element).children().text();
+            var link = $(element).children().attr("href");
+            var title = $(element).children().text();
 
             // Save these results in an object that we'll push into the results array we defined earlier
             db.foxScrappedData.insert({
-                title: title,
-                link: link
+                link: link,
+                title: title               
             });
-
         });
         res.json(true);
         // Log the results once you've looped through each of the elements found with cheerio
