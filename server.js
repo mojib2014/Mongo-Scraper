@@ -2,36 +2,45 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var request = require("request");
 var mongojs = require("mongojs");
+var mongoose = require("mongoose");
+var Note = require("./models/Note.js");
+var Article = require("./models/Article.js");
+var logger = require("morgan");
 var cheerio = require("cheerio");
+mongoose.Promise = Promise;
 var path = require("path");
 var app = express();
-app.use(express.static("./public"));
+
 
 var PORT = process.env.PORT || 4000;
-var databaseUrl = "foxsScrape";
-var collections = ["foxsScrappedData"];
-var db = mongojs(databaseUrl, collections);
-db.on("error", function (error) {
-    console.log("Database Error", error);
-});
+
+
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(bodyParser.text());
-app.use(bodyParser.json({
-    type: "application/vnd.api+json"
-}));
+app.use(express.static("./public"));
+
+// connect to database
+
+mongoose.connect("mongodb://localhost/foxsScrape");
+var db = mongoose.connection;
+
+db.on("error", function (error) {
+    console.log("Mongoose Error: ", error);
+});
+
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function () {
+    console.log("Mongoose connection successful.");
+});
+
+
+
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "views/index.html"));
 });
-
-/* app.get("/survey", function(req, res) {
-  res.sendFile(path.join(__dirname, "../public/survey.html"));
-}); */
-// If no matching route is found default to home
-
 var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({
@@ -72,7 +81,7 @@ app.get("/scrape", function (req, res) {
             // Save these results in an object that we'll push into the results array we defined earlier
             db.foxScrappedData.insert({
                 link: link,
-                title: title               
+                title: title
             });
         });
         res.json(true);
@@ -81,6 +90,42 @@ app.get("/scrape", function (req, res) {
         // db.insertMany(results);
     });
 
+});
+// Gets all the articles
+app.get("/all", function (req, res) {
+    Article.find({}, function (error, doc) {
+        if (error) {
+            console.log(error);
+        } else {
+            res.send(doc);
+        }
+    });
+});
+
+// Create a new note or replace an existing note
+app.post("/articles/:id", function (req, res) {
+    // Create a new note and pass the req.body to the entry
+    var newNote = new Note(req.body);
+
+    // And save the new note the db
+    newNote.save(function (error, doc) {
+        // Log any errors
+        if (error) {
+            console.log(error);
+        }
+        // Otherwise
+        else {
+            // Use the article id to find and update it's note
+            Article.findOneAndUpdate({"_id":req.params.id},{"note":doc._id})
+            .exec(function(error,doc){
+                if(error) {
+                    console.log(error)
+                } else {
+                    res.send(doc);
+                }
+            });
+        }
+    });
 });
 
 app.get("*", function (req, res) {
