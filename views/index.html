@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <script type="text/javascript" src="/javascript/home.js"></script>
+    <script type="text/javascript" src="/javascript/saved.js"></script>
 </head>
 
 <body>
@@ -20,15 +21,15 @@
                 <a href="#!" class="brand-logo center">Mongo Scraper</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a href="#">HOME</a></li>
-                    <li><a href="#">SAVED ARTICLES</a></li>
-                    <button class="btn waves-effect waves-light" type="submit" name="action" onclick="displayScrape()">SCRAPE ARTICLES</button>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="#" onclick="displaySaved()">SAVED ARTICLES</a></li>
+                    <button data-target="scrape-article" class="btn waves-effect waves-light modal-trigger" onclick="displayScrape()">SCRAPE ARTICLES</button>
 
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
-                    <li><a href="sass.html">HOME</a></li>
-                    <li><a href="badges.html">SAVED ARTICLES</a></li>
-                    <li><a href="collapsible.html">SCRAPE ARTICLES</a></li>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="#">SAVED ARTICLES</a></li>
+                    <button data-target="scrape-article" class="btn waves-effect waves-light modal-trigger" onclick="displayScrape()">SCRAPE ARTICLES</button>
                 </ul>
             </div>
         </nav>
@@ -40,43 +41,66 @@
                     <!-- random image -->
                     <div class="caption center-align">
                         <h3>MONGO SCRAPER</h3>
-                        <h5 class="light grey-text text-lighten-3">FOX 5 SAN DIEGO</h5>
+                        <h5 class="light grey-text text-lighten-3">NEW YORK TIMES</h5>
                     </div>
                 </li>
                 <li>
-                    <img src="../public/images/newspaper.jpg">
+                    <img src="/images/newspaper.jpg">
                     <!-- random image -->
                     <div class="caption left-align">
-                        <h3 class="white-text">FOX 5 SAN DIEGO</h3>
+                        <h3 class="white-text">NEW YORK TIMES</h3>
                         <h5 class="light white-text">VIEW YOUR FAVOURITE ARTICLES......</h5>
                     </div>
                 </li>
                 <li>
-                    <img src="../public/images/newspaper2.jpg">
+                    <img src="/images/newspaper2.jpg">
                     <!-- random image -->
                     <div class="caption right-align">
-                        <h3>FOX 5 SAN DIEGO</h3>
+                        <h3>NEW YORK TIMES</h3>
                         <h5 class="light grey-text text-lighten-3">SAVE YOUR FAVOURITE ARTICLES!!!!!</h5>
                     </div>
                 </li>
                 <li>
-                    <img src="../public/images/newspaper3.jpg">
+                    <img src="/images/newspaper3.jpg">
                     <!-- random image -->
                     <div class="caption center-align">
-                        <h3>FOX 5 SAN DIEGO</h3>
+                        <h3>NEW YORK TIMES</h3>
                         <h5 class="light grey-text text-lighten-3">ONE CLICK TO SCRAPE YOUR FAVOURTIE ARTICLE.......</h5>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="row">
-            <div class="col s12 m5" id="fox5">
+            <div class="col s12 m6 l3" id="nyt">
             </div>
-            <div class="col s12 m5" id="fox5">
+            <div class="col s12 m6 l3" id="nyt">
+            </div>
+            <!-- Modal Structure  for scraping article information-->
+            <div id="scrape-article" class="modal">
+                <div class="modal-content" >
+                    <h4>Number of Articles Scrapped</h4>
+                    <h4 id="total-number"></h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Close</a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Structure for creating a note -->
+        <div id="notes" class="modal">
+            <div class="modal-content">
+                <form>
+                    <h1>Note for the Article</h1>
+                    <textarea id="textarea1" class="materialize-textarea"></textarea>
+                    <label for="textarea1">Textarea</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Save Note</a>
             </div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

@@ -2,6 +2,10 @@
     background-color:#01579b;
 }
 
+a#save {
+    margin-left: 10px;
+}
+
 /* body {
     background-image: url("../images/stardust.png");
 } */
