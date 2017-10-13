@@ -17,6 +17,7 @@ var PORT = process.env.PORT || 4000;
 
 
 // Parse application/x-www-form-urlencoded
+app.use( logger( 'dev' ) );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -156,21 +157,21 @@ app.post("/save", function (req, res) {
     //res.json(result);
 });
 
-// delete a note
-
+// route to delete saved articles
 app.delete("/delete", function (req, res) {
     var result = {};
-    console.log(req.body, req.param);
+    console.log("Req.body:", req.body._id);
     result._id = req.body._id;
-    Save.remove({'_id': req.body._id}, function (err, doc) {
+    console.log("Result:", result); 
+    Save.findOneAndRemove({'_id': req.body._id}, function (err, doc) {
         // Log any errors
         if (err) {
-            console.log(err);
+            console.log("error:", err);
             res.json(err);
         }
         // Or log the doc
         else {
-            console.log(doc);
+            console.log("doc:", doc);
             res.json(doc);
         }
     });
@@ -205,11 +206,13 @@ app.post("/articles/:id", function (req, res) {
         }
     });
 });
+// delete a note
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "views/index.html"));
 });
-
+require("./routes/scrape.js");
+require("./routes/html.js");
 app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
 });

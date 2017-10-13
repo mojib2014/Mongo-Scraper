@@ -4,6 +4,8 @@ var request = require("request");
 // require the models
 var Note = require("../models/Note.js");
 var Article = require("../models/Article.js");
+var Save = require("../models/Save");
+
 module.exports = function (app) {
     app.get("/scrape", function (req, res) {
         request("https://www.nytimes.com/", function (error, response, html) {
@@ -29,7 +31,6 @@ module.exports = function (app) {
                 result.link = $(element).children("h2").children("a").attr("href");
                 // Save these results in an object that we'll push into the results array we defined earlier
                 var entry = new Article(result);
-
                 // Now, save that entry to the db
                 entry.save(function (err, doc) {
                     // Log any errors
@@ -72,13 +73,11 @@ module.exports = function (app) {
                 }
             });
     });
+
     // get route to return all saved articles
     app.get("/saved/all", function (req, res) {
-
-        Article.find({}, function (error, data) {
-
+        Save.find({}, function (error, data) {
             console.log(data);
-
             if (error) {
                 console.log(error);
             } else {
@@ -86,9 +85,63 @@ module.exports = function (app) {
             }
         });
     });
+
+    // post route to save the article
+    app.post("/save", function (req, res) {
+        var result = {};
+        // var link = $(element).children().attr("href");
+        // var title = $(element).children().text();
+        result.id = req.body._id;
+        result.summary = req.body.summary;
+        // result.byline = req.body.byline;
+        // console.log(result.summary);
+        result.title = req.body.title;
+        result.link = req.body.link;
+        // Save these results in an object that we'll push into the results array we defined earlier
+        var entry = new Save(result);
+        // Now, save that entry to the db
+        entry.save(function (err, doc) {
+            // Log any errors
+            if (err) {
+                console.log(err);
+                res.json(err);
+            }
+            // Or log the doc
+            else {
+                console.log(doc);
+                res.json(doc);
+            }
+        });
+        //res.json(result);
+    });
+
+    // delete a note
+
+    app.delete("/delete", function (req, res) {
+        var result = {};
+        console.log("Req.body:", req.body._id);
+        result._id = req.body._id;
+        console.log("Result:", result);
+        Save.findOneAndRemove({
+            '_id': req.body._id
+        }, function (err, doc) {
+            // Log any errors
+            if (err) {
+                console.log("error:", err);
+                res.json(err);
+            }
+            // Or log the doc
+            else {
+                console.log("doc:", doc);
+                res.json(doc);
+            }
+        });
+    });
+
     // Create a new note or replace an existing note
     app.post("/articles/:id", function (req, res) {
         // Create a new note and pass the req.body to the entry
+        console.log("running here");
         var newNote = new Note(req.body);
         // And save the new note the db
         newNote.save(function (error, doc) {
@@ -114,4 +167,5 @@ module.exports = function (app) {
             }
         });
     });
+
 }
