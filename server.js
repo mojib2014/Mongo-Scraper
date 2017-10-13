@@ -25,17 +25,31 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("./public"));
 
 // connect to database
-mongoose.connect("mongodb://localhost/foxsScrape");
-var db = mongoose.connection;
 
-db.on("error", function (error) {
-    console.log("Mongoose Error: ", error);
-});
+var db = process.env.MONGODB_URI || "mongodb://localhost/foxsScrape";
 
-// Once logged in to the db through mongoose, log a success message
-db.once("open", function () {
-    console.log("Mongoose connection successful.");
+// Connect mongoose to our database
+mongoose.connect(db, function(error) {
+  // Log any errors connecting with mongoose
+  if (error) {
+    console.log(error);
+  }
+  // Or log a success message
+  else {
+    console.log("mongoose connection is successful");
+  }
 });
+// mongoose.connect("mongodb://localhost/foxsScrape");
+// var db = mongoose.connection;
+
+// db.on("error", function (error) {
+//     console.log("Mongoose Error: ", error);
+// });
+
+// // Once logged in to the db through mongoose, log a success message
+// db.once("open", function () {
+//     console.log("Mongoose connection successful.");
+// });
 
 var exphbs = require("express-handlebars");
 

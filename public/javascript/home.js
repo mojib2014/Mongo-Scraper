@@ -135,14 +135,14 @@ $(document).ready(function () {
         var title = $("#title-" + thisId).text();
         var link = $("#link-" + thisId).attr('href');
         var byline = $("#byline-" + thisId).text();
-        var data = { "_id": thisId };
-        console.log(data);
+        var data = {
+            "_id": thisId
+        };
         $.ajax({
             type: "DELETE",
             url: "/delete",
             data: data,
             success: function (data, textStatus) {
-                console.log(data);
                 $("#main-" + thisId).remove();
             }
         })
