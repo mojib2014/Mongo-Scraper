@@ -95,18 +95,15 @@ app.get("/scrape", function (req, res) {
                 }
                 // Or log the doc
                 else {
-                    console.log(doc);
+                    // console.log(doc);
                 }
             });
         });
         res.json(true);
-        // Log the results once you've looped through each of the elements found with cheerio
-        // console.log(results);
-        // db.insertMany(results);
     });
 
 });
-// Gets all the articles
+// Get route for  all the articles
 app.get("/articles", function (req, res) {
     Article.find({}, function (error, doc) {
         if (error) {
@@ -116,7 +113,7 @@ app.get("/articles", function (req, res) {
         }
     });
 });
-// Gets all the articles with the id
+// Get route for  all the articles with the id
 app.get("/articles/:id", function (req, res) {
     Article.find({
             "_id": req.params.id
@@ -164,7 +161,6 @@ app.post("/save", function (req, res) {
         }
         // Or log the doc
         else {
-            console.log(doc);
             res.json(doc);
         }
     });
@@ -185,48 +181,54 @@ app.delete("/delete", function (req, res) {
         }
         // Or log the doc
         else {
-            console.log("doc:", doc);
             res.json(doc);
         }
     });
 });
 
 // Create a new note or replace an existing note
-app.post("/articles/:id", function (req, res) {
+app.post("/notes", function (req, res) {
     // Create a new note and pass the req.body to the entry
-    console.log("running here");
-    var newNote = new Note(req.body);
-    // And save the new note the db
-    newNote.save(function (error, doc) {
-        // Log any errors
-        if (error) {
-            console.log(error);
-        }
-        // Otherwise
-        else {
-            // Use the article id to find and update it's note
-            Article.findOneAndUpdate({
-                    "_id": req.params.id
-                }, {
-                    "note": doc._id
-                })
-                .exec(function (error, doc) {
-                    if (error) {
-                        console.log(error)
-                    } else {
-                        res.send(doc);
-                    }
-                });
-        }
-    });
+    if(req.body) {
+        console.log("running here", req.body);
+        var newNote = new Note(req.body);
+        // And save the new note the db
+        newNote.save(function (error, doc) {
+            // Log any errors
+            if (error) {
+                console.log(error);
+            }
+            // Otherwise
+            else {
+                console.log(doc);
+                // Use the article id to find and update it's note
+                /*Save.findOneAndUpdate({
+                        "_id": req.body._id
+                    }, {
+                        "note": req.body.text
+                    })
+                    .exec(function (error, doc) {
+                        if (error) {
+                            console.log(error)
+                        } else {
+                            res.send(doc);
+                        }
+                    });*/
+            }
+        });
+    } else {
+        res.send("Error");
+    }
+    
 });
 // delete a note
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "views/index.html"));
 });
-require("./routes/scrape.js");
-require("./routes/html.js");
+// require("./routes/scrape.js");
+// require("./routes/html.js");
+
 app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
 });
