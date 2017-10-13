@@ -71,34 +71,36 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col s12 m6 l3" id="nyt">
+            <div class="col s12 m4 l4" id="nyt-0">
             </div>
-            <div class="col s12 m6 l3" id="nyt">
+            <div class="col s12 m4 l4" id="nyt-1">
             </div>
-            <!-- Modal Structure  for scraping article information-->
-            <div id="scrape-article" class="modal">
-                <div class="modal-content" >
-                    <h4>Number of Articles Scrapped</h4>
-                    <h4 id="total-number"></h4>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Close</a>
-                </div>
+            <div class="col s12 m4 l4" id="nyt-2">
             </div>
         </div>
-        <!-- Modal Structure for creating a note -->
-        <div id="notes" class="modal">
+        <!-- Modal Structure  for scraping article information-->
+        <div id="scrape-article" class="modal">
             <div class="modal-content">
-                <form>
-                    <h1 id="display-title">Note for the Article</h1>
-                    <textarea id="textarea1" class="materialize-textarea"></textarea>
-                    <label for="textarea1">Take Notes</label>
-                </form>
+                <h4>Number of Articles Scrapped</h4>
+                <h4 id="total-number"></h4>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="savenote">Save Note</a>
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="deletenote">Delete Note</a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Close</a>
             </div>
+        </div>
+    </div>
+    <!-- Modal Structure for creating a note -->
+    <div id="notes" class="modal">
+        <div class="modal-content">
+            <form>
+                <h1 id="display-title">Note for the Article</h1>
+                <textarea id="textarea1" class="materialize-textarea"></textarea>
+                <label for="textarea1">Take Notes</label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="savenote">Save Note</a>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="deletenote">Delete Note</a>
         </div>
     </div>
 
