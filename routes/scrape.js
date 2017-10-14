@@ -74,16 +74,16 @@ module.exports = function (app) {
 
     // get route to return all saved articles
     app.get("/saved/all", function (req, res) {
-        Save.find({})            
-            .populate("note") 
+        Save.find({})
+            .populate("note")
             .exec(function (error, data) {
-            console.log(data);
-            if (error) {
-                console.log(error);
-            } else {
-                res.json(data);
-            }
-        });
+                console.log(data);
+                if (error) {
+                    console.log(error);
+                } else {
+                    res.json(data);
+                }
+            });
     });
 
     // post route to save the article
@@ -135,22 +135,33 @@ module.exports = function (app) {
         });
     });
 
+    app.get("/notes/:id", function (req, res) {
+        if(req.params.id) {
+            Note.find({
+                "article_id": req.params.id
+            })
+            .exec(function (error, doc) {
+                if (error) {
+                    console.log(error)
+                } else {
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
+        }
+    });
+
+
     // Create a new note or replace an existing note
     app.post("/notes", function (req, res) {
-        if(req.body) {
-            console.log("running here",req.body);
+        if (req.body) {
+            console.log("running here", req.body);
             var newNote = new Note(req.body);
-            newNote.save(function(error,doc){
-                if(error) {
+            newNote.save(function (error, doc) {
+                if (error) {
                     console.log(error);
                 } else {
-                    Article.findOneAndUpdate({},{$push: {"note": doc._id}},{new: true},function(error,doc){
-                        if(error) {
-                            res.send(error);
-                        } else {
-                            res.send(doc);
-                        }
-                    });
+                    res.json(doc);
                 }
             });
         } else {
@@ -158,13 +169,37 @@ module.exports = function (app) {
         }
     });
     // find and update the note
-    app.get("/notepopulate",function(req,res){
-        Note.find({"_id": req.params.id},function(error,doc){
-            if(error) {
+    app.get("/notepopulate", function (req, res) {
+        Note.find({
+            "_id": req.params.id
+        }, function (error, doc) {
+            if (error) {
                 console.log(error);
             } else {
                 res.send(doc);
             }
-        })
-    })
+        });
+    });
+
+    // delete a note
+
+    app.delete("/deletenote", function (req, res) {
+        var result = {};
+        console.log("Req.body:", req.body._id);
+        result._id = req.body._id;
+        console.log("Result:", result);
+        Note.findOneAndRemove({
+            '_id': req.body._id
+        }, function (err, doc) {
+            // Log any errors
+            if (err) {
+                console.log("error:", err);
+                res.json(err);
+            }
+            // Or log the doc
+            else {
+                res.json(doc);
+            }
+        });
+    });
 }

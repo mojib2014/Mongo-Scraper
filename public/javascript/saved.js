@@ -49,6 +49,21 @@ function displaySaved() {
     });
 }
 
+function deletenote(thisId) {
+    var data = {
+        "_id": thisId
+    };
+    console.log(data);
+    $.ajax({
+        type: "DELETE",
+        url: "/deletenote",
+        data: data,
+        success: function (data, textStatus) {
+            $("#" + thisId).remove();
+        }
+    })
+}
+
 $(document).ready(function () {
     $('.slider').slider();
     $(".button-collapse").sideNav();
@@ -102,8 +117,49 @@ $(document).ready(function () {
     $(document).on("click", ".create-note", function (data) {
         // alert($(this).attr("data-id"));
         $("#savenote").attr("data-id", $(this).attr("data-id"));
-        // $("#display-title").append($(this).attr("data-id"));
+        // <div id="display-note"></div>
+        let aid = $(this).attr("data-id");
+        let title = "Notes for the Article: " + aid;
+        $("#display-title").empty();
+        $("#display-title").text(title);
+        $("#textarea1").empty();
+        $.getJSON("/notes/" + aid, function (data) {
+            if(data.length) {
+                console.log(data);
+                let notetext = "Notes: " + data[0].body;
+                $("#display-note").empty();
+                let noteList = $("<ul>");
+                noteList.addClass("collection with-header");
+                let hli = $("<li>");
+                hli.addClass("collection-header")
+                hli.text("Notes");
+                noteList.append(hli);
+            
+                for (let i = 0; i < data.length; i++) {
+                    let ili = $("<li>");
+                    ili.attr("id", data[i]._id);
+                    ili.addClass("collection-item");
 
+                    let idiv = $("<div>");
+                    idiv.text(data[i].body);
+
+                    let adelete = $("<a>");
+                    adelete.addClass("secondary-content");
+                    adelete.attr("note-id", data[i]._id);
+                    adelete.attr("href", "#");
+                    adelete.attr("onclick", 'deletenote("' + data[i]._id + '")');
+                    let xdelete = $("<i>");
+                    xdelete.addClass("material-icons");
+                    xdelete.attr("note-id", data[i]._id);
+                    xdelete.html("delete");
+                    adelete.append(xdelete);
+                    idiv.append(adelete);
+                    ili.append(idiv);
+                    noteList.append(ili);
+                }
+                $("#display-note").append(noteList);
+            }
+        });
     });
 
     // When you click the savenote button
@@ -120,7 +176,7 @@ $(document).ready(function () {
             type: "POST",
             url: "/notes",
             data: {
-                "_id": thisId,
+                "article_id": thisId,
                 "body": text
             },
             success: function (data, textStatus, jqXHR) {
@@ -132,11 +188,14 @@ $(document).ready(function () {
     });
     // delete note button
     $(document).on("click", "#deletenote", function () {
-        // Grab the id associated with the article from the submit button
-        // var thisId = $(this).attr("data-id");
-        // alert(thisId);
-
         // Run a DELETE request to change the note, using what's entered in the inputs
-
+        $.ajax({
+            type: "DELETE",
+            url: "/deletenote",
+            data: data,
+            success: function (data, textStatus) {
+                $("#display-note").remove();
+            }
+        });
     });
 });

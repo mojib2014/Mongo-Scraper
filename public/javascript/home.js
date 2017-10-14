@@ -46,5 +46,5 @@ function displayScrape() {
 $(document).ready(function () {
     $('.slider').slider();
     $(".button-collapse").sideNav();
-    $('.modal').modal();   
+    $('.modal').modal();
 });
