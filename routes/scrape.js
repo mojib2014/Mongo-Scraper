@@ -62,6 +62,7 @@ module.exports = function (app) {
         Article.find({
                 "_id": req.params.id
             })
+            .populate("note")
             .exec(function (error, doc) {
                 if (error) {
                     console.log(error)
@@ -73,7 +74,9 @@ module.exports = function (app) {
 
     // get route to return all saved articles
     app.get("/saved/all", function (req, res) {
-        Save.find({}, function (error, data) {
+        Save.find({})            
+            .populate("note") 
+            .exec(function (error, data) {
             console.log(data);
             if (error) {
                 console.log(error);
@@ -134,38 +137,34 @@ module.exports = function (app) {
 
     // Create a new note or replace an existing note
     app.post("/notes", function (req, res) {
-        // Create a new note and pass the req.body to the entry
-        if (req.body) {
-            console.log("running here", req.body);
+        if(req.body) {
+            console.log("running here",req.body);
             var newNote = new Note(req.body);
-            // And save the new note the db
-            newNote.save(function (error, doc) {
-                // Log any errors
-                if (error) {
+            newNote.save(function(error,doc){
+                if(error) {
                     console.log(error);
-                }
-                // Otherwise
-                else {
-                    console.log(doc);
-                    // Use the article id to find and update it's note
-                    /*Save.findOneAndUpdate({
-                            "_id": req.body._id
-                        }, {
-                            "note": req.body.text
-                        })
-                        .exec(function (error, doc) {
-                            if (error) {
-                                console.log(error)
-                            } else {
-                                res.send(doc);
-                            }
-                        });*/
+                } else {
+                    Article.findOneAndUpdate({},{$push: {"note": doc._id}},{new: true},function(error,doc){
+                        if(error) {
+                            res.send(error);
+                        } else {
+                            res.send(doc);
+                        }
+                    });
                 }
             });
         } else {
             res.send("Error");
         }
-
     });
-    // delete a note
+    // find and update the note
+    app.get("/notepopulate",function(req,res){
+        Note.find({"_id": req.params.id},function(error,doc){
+            if(error) {
+                console.log(error);
+            } else {
+                res.send(doc);
+            }
+        })
+    })
 }

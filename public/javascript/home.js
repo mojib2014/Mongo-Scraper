@@ -6,9 +6,9 @@ function displayScrape() {
         $("#total-number").text(data.length);
         for (var i = 0; i < data.length; i++) {
             var mainDiv = $("<div>");
-            mainDiv.addClass("card blue-grey darken-1");
+            mainDiv.addClass("card grey lighten-2");
             var cardContentDiv = $("<div>");
-            cardContentDiv.addClass("card-content white-text");
+            cardContentDiv.addClass("card-content black-text");
             var spanTitle = $("<span>");
             spanTitle.addClass("card-title");
             spanTitle.attr("data-id", data[i]._id);
@@ -27,7 +27,7 @@ function displayScrape() {
             a.text("Go to the article");
             cardActionDiv.append(a);
             var saveArticle = $("<a>");
-            saveArticle.addClass("waves-effect waves-light btn save-button");
+            saveArticle.addClass("waves-effect waves-light white btn save-button");
             saveArticle.attr("id", data[i]._id);
             saveArticle.text("Save Article");
             var byline = $("<p>");

@@ -6,10 +6,10 @@ function displaySaved() {
         $("#total-number").text(data.length);
         for (var i = 0; i < data.length; i++) {
             var mainDiv = $("<div>");
-            mainDiv.addClass("card blue-grey darken-1");
+            mainDiv.addClass("card grey lighten-2");
             mainDiv.attr("id", "main-" + data[i]._id);
             var cardContentDiv = $("<div>");
-            cardContentDiv.addClass("card-content white-text");
+            cardContentDiv.addClass("card-content black-text");
             var spanTitle = $("<span>");
             spanTitle.addClass("card-title");
             spanTitle.attr("data-id", data[i]._id);
@@ -28,12 +28,12 @@ function displaySaved() {
             a.text("Go to the article");
             cardActionDiv.append(a);
             var button = $("<a>");
-            button.addClass("waves-effect waves-light btn create-note modal-trigger");
+            button.addClass("waves-effect waves-light white btn create-note modal-trigger");
             button.attr("data-id", data[i]._id);
             button.attr("data-target", "notes");
             button.text("Create Notes");
             var deleteArticle = $("<a>");
-            deleteArticle.addClass("waves-effect waves-light btn delete-button");
+            deleteArticle.addClass("waves-effect waves-light white btn delete-button");
             deleteArticle.attr("id", data[i]._id);
             deleteArticle.text("Delete");
             var byline = $("<p>");
@@ -124,7 +124,8 @@ $(document).ready(function () {
                 "body": text
             },
             success: function (data, textStatus, jqXHR) {
-
+                console.log(data);
+                // $("#display-note").append(data);
             }
 
         });
