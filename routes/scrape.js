@@ -30,18 +30,20 @@ module.exports = function (app) {
                 result.title = $(element).children("h2").text();
                 result.link = $(element).children("h2").children("a").attr("href");
                 // Save these results in an object that we'll push into the results array we defined earlier
-                var entry = new Article(result);
-                // Now, save that entry to the db
-                entry.save(function (err, doc) {
-                    // Log any errors
-                    if (err) {
-                        console.log(err);
-                    }
-                    // Or log the doc
-                    else {
-                        // console.log(doc);
-                    }
-                });
+                if (result.title && result.link) {
+                    var entry = new Article(result);
+                    // Now, save that entry to the db
+                    entry.save(function (err, doc) {
+                        // Log any errors
+                        if (err) {
+                            console.log(err);
+                        }
+                        // Or log the doc
+                        else {
+                            // console.log(doc);
+                        }
+                    });
+                }
             });
             res.json(true);
         });
