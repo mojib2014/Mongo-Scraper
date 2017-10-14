@@ -37,18 +37,16 @@ module.exports = function (app) {
                         // Log any errors
                         if (err) {
                             console.log(err);
-                        }
-                        // Or log the doc
-                        else {
-                            // console.log(doc);
+                            res.json({"code" : "error"});
                         }
                     });
                 }
             });
-            res.json(true);
+            res.json({"code" : "success"});
+            // res.json(true);
         });
-
     });
+
     // Get route for  all the articles
     app.get("/articles", function (req, res) {
         Article.find({}, function (error, doc) {
