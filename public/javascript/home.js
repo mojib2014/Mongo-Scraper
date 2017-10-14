@@ -29,7 +29,7 @@ function displayScrape() {
                     a.text("Go to the article");
                     cardActionDiv.append(a);
                     var saveArticle = $("<a>");
-                    saveArticle.addClass("waves-effect waves-light white btn save-button");
+                    saveArticle.addClass("waves-effect waves-light btn save-button");
                     saveArticle.attr("id", data[i]._id);
                     saveArticle.text("Save Article");
                     var byline = $("<p>");

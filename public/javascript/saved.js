@@ -122,7 +122,7 @@ $(document).ready(function () {
         let title = "Notes for the Article: " + aid;
         $("#display-title").empty();
         $("#display-title").text(title);
-        $("#textarea1").empty();
+        $("#textarea1").val("");
         $.getJSON("/notes/" + aid, function (data) {
             if(data.length) {
                 console.log(data);
@@ -165,8 +165,6 @@ $(document).ready(function () {
     // When you click the savenote button
     $(document).on("click", "#savenote", function () {
         // Grab the id associated with the article from the submit button
-
-        // alert(thisId);
         // get the user input value 
         var thisId = $(this).attr("data-id");
         var text = $("#textarea1").val();
@@ -181,9 +179,8 @@ $(document).ready(function () {
             },
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
-                // $("#display-note").append(data);
+                $("#textarea1").val("");
             }
-
         });
     });
     // delete note button

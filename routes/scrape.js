@@ -26,20 +26,22 @@ module.exports = function (app) {
                 // var title = $(element).children().text();
                 result.summary = $(element).children("p.summary").text();
                 result.byline = $(element).children("p.byline").text();
-                // console.log(result.summary);
                 result.title = $(element).children("h2").text();
                 result.link = $(element).children("h2").children("a").attr("href");
                 // Save these results in an object that we'll push into the results array we defined earlier
                 if (result.title && result.link) {
                     var entry = new Article(result);
                     // Now, save that entry to the db
-                    entry.save(function (err, doc) {
-                        // Log any errors
-                        if (err) {
-                            console.log(err);
-                            res.json({"code" : "error"});
+                    Article.update(
+                        {link: result.link},
+                        result,
+                        { upsert: true },
+                        function (error, doc){
+                            if (error) {
+                                console.log(error);
+                            }
                         }
-                    });
+                    );
                 }
             });
             res.json({"code" : "success"});
@@ -77,9 +79,9 @@ module.exports = function (app) {
         Save.find({})
             .populate("note")
             .exec(function (error, data) {
-                console.log(data);
                 if (error) {
                     console.log(error);
+                    res.json({"code" : "error"});
                 } else {
                     res.json(data);
                 }
@@ -89,12 +91,9 @@ module.exports = function (app) {
     // post route to save the article
     app.post("/save", function (req, res) {
         var result = {};
-        // var link = $(element).children().attr("href");
-        // var title = $(element).children().text();
         result.id = req.body._id;
         result.summary = req.body.summary;
-        // result.byline = req.body.byline;
-        // console.log(result.summary);
+        result.byline = req.body.byline;
         result.title = req.body.title;
         result.link = req.body.link;
         // Save these results in an object that we'll push into the results array we defined earlier
@@ -117,9 +116,7 @@ module.exports = function (app) {
     // route to delete saved articles
     app.delete("/delete", function (req, res) {
         var result = {};
-        console.log("Req.body:", req.body._id);
         result._id = req.body._id;
-        console.log("Result:", result);
         Save.findOneAndRemove({
             '_id': req.body._id
         }, function (err, doc) {
@@ -144,7 +141,6 @@ module.exports = function (app) {
                 if (error) {
                     console.log(error)
                 } else {
-                    console.log(doc);
                     res.send(doc);
                 }
             });
@@ -155,7 +151,6 @@ module.exports = function (app) {
     // Create a new note or replace an existing note
     app.post("/notes", function (req, res) {
         if (req.body) {
-            console.log("running here", req.body);
             var newNote = new Note(req.body);
             newNote.save(function (error, doc) {
                 if (error) {
@@ -185,9 +180,7 @@ module.exports = function (app) {
 
     app.delete("/deletenote", function (req, res) {
         var result = {};
-        console.log("Req.body:", req.body._id);
         result._id = req.body._id;
-        console.log("Result:", result);
         Note.findOneAndRemove({
             '_id': req.body._id
         }, function (err, doc) {
